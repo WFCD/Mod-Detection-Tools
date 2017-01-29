@@ -21,7 +21,7 @@
       <RowConstraints />
    </rowConstraints>
    <children>
-      <TextField fx:id="fileLocation" GridPane.columnIndex="1" GridPane.rowIndex="1" text="C:\warframe4\test - Copy.png"/>
+      <TextField fx:id="fileLocation" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label prefHeight="17.0" prefWidth="260.0" text="Select File to use" GridPane.rowIndex="1" />
       <Button mnemonicParsing="false" onAction="#browseFiles" text="Browse" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <Label prefHeight="17.0" text="JavaCV Warframe Threshold Viewer" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="3" />
