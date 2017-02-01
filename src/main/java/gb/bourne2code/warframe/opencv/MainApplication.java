@@ -4,14 +4,21 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.LogManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 /** Main application class for the login demo application */
 public class MainApplication extends Application {
-    public static void main(String[] args) { launch(args); }
-
     private static Stage mainStage;
+    private static Logger logger = LoggerFactory.getLogger(MainApplication.class);
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public static Stage getMainStage() {
         return mainStage;

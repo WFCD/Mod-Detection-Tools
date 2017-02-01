@@ -3,6 +3,8 @@ package gb.bourne2code.warframe.opencv.recognise;
 import gb.bourne2code.warframe.opencv.exceptions.BaseRuntimeException;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_objdetect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
 public class DetectMods {
     private String modImagePath;
     private Path tempDirPath;
+    private static Logger logger = LoggerFactory.getLogger(DetectMods.class);
 
     //Create the Detect Mods engine. If the image needs to be change, create a new instance of Detect Mods
     public DetectMods(String image) {
@@ -33,7 +36,7 @@ public class DetectMods {
 
     //Lets do some recognising!
     public String run(String stageFile, double scale, int neighbours) {
-        System.out.println("\nRunning Mod Detection");
+        logger.debug("\nRunning Mod Detection");
         //weird bugs are weird -getClassLoader.getPath() prefixes the path with a / - this is obviously a bug with Windows/Java, but this work around works
         String cascadeFilePath = new File(DetectMods.class.getClassLoader().getResource("cascade/" + stageFile + ".xml").getFile()).getAbsolutePath();
 
@@ -49,10 +52,11 @@ public class DetectMods {
         //debugging time takes for performance
         long l = System.currentTimeMillis();
         //MAGIC!
+        //todo: detect aspect ratio and change min/max size
         modDetector.detectMultiScale(image, modDetections, scale, neighbours, 0, new opencv_core.Size(230,100), new opencv_core.Size(270,140));
         long l1 = System.currentTimeMillis();
 
-        System.out.println(String.format("Detected %s mods in %s ms", modDetections.size(), l1-l));
+        logger.debug("Detected {} mods in {} ms", modDetections.size(), l1-l);
 
         // Draw a bounding box around each mod. And cross your fingers. And toes. And your pet's toes. If they have toes...
         for (int i=0;i<modDetections.size();i++) {
@@ -63,7 +67,7 @@ public class DetectMods {
 
         //save resulting file for display. imwrite doesn't do temporary files, this will have to be a bug report for now
         String fileLocation = tempDirPath.toString() + "workInProgress.png";
-        System.out.println(String.format("Writing %s", fileLocation));
+        logger.debug("Writing %s", fileLocation);
         imwrite(fileLocation, image);
 
         return fileLocation;
