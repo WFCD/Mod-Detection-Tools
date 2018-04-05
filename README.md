@@ -1,6 +1,6 @@
 # Mod-Detection-Tools
 
-[![Supported by Warframe Community Developers](https://warframestat.us/wfcd.png)(https://github.com/WFCD "Supported by Warframe Community Developers")
+[![Supported by Warframe Community Developers](https://warframestat.us/wfcd.png)](https://github.com/WFCD "Supported by Warframe Community Developers")
 
 Tool(s) for tinkering with specific OpenCV settings to help tweak and tune the detection settings for OpenCV and the detection of mods inside an image. 
 
