@@ -29,6 +29,7 @@ public class DetectMods {
 
         try {
             tempDirPath = Files.createTempDirectory("optv-");
+            logger.info("Created temp directory at {}", tempDirPath);
         } catch (IOException e) {
             throw new BaseRuntimeException("Unable to create temp directory", e);
         }
@@ -61,6 +62,8 @@ public class DetectMods {
         // Draw a bounding box around each mod. And cross your fingers. And toes. And your pet's toes. If they have toes...
         for (int i=0;i<modDetections.size();i++) {
             opencv_core.Rect rect = modDetections.get(i);
+            opencv_core.Mat subMatrix = image.apply(rect);
+            imwrite(tempDirPath.resolve("mod-" + i + ".png").toString(), subMatrix);
             //Rectangle drawing!
             rectangle(image, new opencv_core.Point(rect.x(), rect.y()), new opencv_core.Point(rect.x() + rect.width(), rect.y() + rect.height()), new opencv_core.Scalar(0, 255, 0, 0));
         }
