@@ -17,3 +17,6 @@ hs_err_pid*
 #ignore intellij specific folders
 .idea/
 *.iml
+
+#ignore debug files
+image.jpg
