@@ -4,12 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /** Main application class for the login demo application */
 public class MainApplication extends Application {
@@ -32,7 +28,9 @@ public class MainApplication extends Application {
         mainStage.setMaximized(maximised);
     }
 
-    @Override public void start(Stage stage) throws IOException {
+    @Override public void start(Stage stage) {
+        logger.info("Starting...");
+
         MainApplication.setMainStage(stage);
         Scene scene = new Scene(new StackPane());
 

@@ -1,6 +1,7 @@
 package gb.bourne2code.warframe.opencv.recognise;
 
 import gb.bourne2code.warframe.opencv.exceptions.BaseRuntimeException;
+import net.sourceforge.tess4j.TesseractException;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
@@ -39,7 +41,9 @@ public class DetectMods {
     public String run(String stageFile, double scale, int neighbours) {
         logger.debug("\nRunning Mod Detection");
         //weird bugs are weird -getClassLoader.getPath() prefixes the path with a / - this is obviously a bug with Windows/Java, but this work around works
-        String cascadeFilePath = new File(DetectMods.class.getClassLoader().getResource("cascade/" + stageFile + ".xml").getFile()).getAbsolutePath();
+        String cascadeFilePath = new File(Objects.requireNonNull(
+                DetectMods.class.getClassLoader().getResource("cascade/" + stageFile + ".xml"))
+                .getFile()).getAbsolutePath();
 
         //Create a new CascadeClassifier based of the cascades created - Which took over 35 computing days to complete....
         opencv_objdetect.CascadeClassifier modDetector = new opencv_objdetect.CascadeClassifier(cascadeFilePath);
@@ -58,21 +62,31 @@ public class DetectMods {
         long l1 = System.currentTimeMillis();
 
         logger.debug("Detected {} mods in {} ms", modDetections.size(), l1-l);
+        DetectModInfo modInfo = new DetectModInfo();
 
+        opencv_core.Mat rectangleMat = image.clone();
         // Draw a bounding box around each mod. And cross your fingers. And toes. And your pet's toes. If they have toes...
         for (int i=0;i<modDetections.size();i++) {
             opencv_core.Rect rect = modDetections.get(i);
             opencv_core.Mat subMatrix = image.apply(rect);
+            try {
+                modInfo.detectModName(subMatrix);
+            } catch (TesseractException e) {
+                e.printStackTrace();
+            }
             imwrite(tempDirPath.resolve("mod-" + i + ".png").toString(), subMatrix);
             //Rectangle drawing!
-            rectangle(image, new opencv_core.Point(rect.x(), rect.y()), new opencv_core.Point(rect.x() + rect.width(), rect.y() + rect.height()), new opencv_core.Scalar(0, 255, 0, 0));
+            rectangle(rectangleMat, new opencv_core.Point(rect.x(), rect.y()), new opencv_core.Point(rect.x() + rect.width(), rect.y() + rect.height()), new opencv_core.Scalar(0, 255, 0, 0));
         }
+
+        image = rectangleMat;
 
         //save resulting file for display. imwrite doesn't do temporary files, this will have to be a bug report for now
         String fileLocation = tempDirPath.toString() + "workInProgress.png";
-        logger.debug("Writing %s", fileLocation);
+        logger.debug("Writing {}", fileLocation);
         imwrite(fileLocation, image);
 
+        modDetector.close();
         return fileLocation;
     }
 }

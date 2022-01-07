@@ -6,7 +6,7 @@
 Tool(s) for tinkering with specific OpenCV settings to help tweak and tune the detection settings for OpenCV and the detection of mods inside an image. 
 
 ## Building
-First of all, install [Tess4J](#Tess4J?).
+Just build it, and run from `main()` in `RunApplication.java`
 
 ## Usage (v0.01)
 Currently very strict. Screenshot and crop an image of the Mods screen in Warframe similar to the examples in 
@@ -20,12 +20,7 @@ Yes, as an overkill for mod recognition I've trained an OpenCV Cascade file to r
 
 ##Tess4J?
 Tess4J is a Java library that uses the Tesseract OCR engine to read text from images. 
-You can install it by following these steps:
 
-1. [Download](https://sourceforge.net/projects/tess4j/) and extract Tess4J
-2. Add the Tess4J jar (located in the dists folder) to Libraries in your IDE
-3. ...
-4. Profit!!
 
 ## Important Information
 I'm new to JavaFx (been a backend Java dev for a long time) so there may be parts of JavaFX which breaches the acceptable '[wtf](https://s-media-cache-ak0.pinimg.com/236x/ff/68/a5/ff68a5a9d71c3eea9ae4f9e8fed469d1.jpg)' code review scale. 
@@ -40,4 +35,6 @@ v0.01 - Init commit, very strict usage
 
 ## Todo:
 Update mod json file automatically from other repository using same bot
+Fix some stuff where some Primed mods are still detected as their normal counterparts
+Add Riven OCR detection
 
