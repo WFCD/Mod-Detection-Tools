@@ -5,7 +5,7 @@
 
 Tool(s) for tinkering with specific OpenCV settings to help tweak and tune the detection settings for OpenCV and the detection of mods inside an image. 
 
-##Building
+## Building
 First of all, install [Tess4J](#Tess4J?).
 
 ## Usage (v0.01)
