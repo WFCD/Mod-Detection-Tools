@@ -38,3 +38,6 @@ I will be using issues to keep track of bugs and features, both created by the c
 
 v0.01 - Init commit, very strict usage
 
+## Todo:
+Update mod json file automatically from other repository using same bot
+
