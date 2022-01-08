@@ -16,7 +16,6 @@ import org.opencv.core.CvType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,12 +24,13 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DetectModInfo {
     private final Tesseract tesseract;
-    private static final List<String> modNames = new ArrayList<>();
+    private static final HashMap<String, String> modNames = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(DetectModInfo.class);
 
     public DetectModInfo() {
@@ -58,12 +58,15 @@ public class DetectModInfo {
             String jsonText = IOUtils.toString(is, StandardCharsets.UTF_8);
             JSONArray json = new JSONArray(jsonText);
             //convert list of mod items to mod names
-            json.forEach(o -> modNames.add(((JSONObject) o).getString("name")));
+            json.forEach(o -> modNames.put(
+                    ((JSONObject) o).getString("name"),
+                    ((JSONObject) o).getString("wikiaUrl").replace("http://warframe.wikia.com/wiki/", "")));
+            // use wikia url here because it should contain the same id as warframe market
             logger.info("Mod names: {}", modNames);
         } catch (IOException ignored) { /*should never happen **/ }
     }
 
-    public void detectModName(opencv_core.Mat mat) throws TesseractException {
+    public Map.Entry<String, String> detectModName(opencv_core.Mat mat) throws TesseractException {
         //convert Matrix to BufferedImage for Tesseract processing
         OpenCVFrameConverter.ToMat converterToMat = new OpenCVFrameConverter.ToMat();
         Java2DFrameConverter converterToImage = new Java2DFrameConverter();
@@ -86,16 +89,10 @@ public class DetectModInfo {
         String ocr = tesseract.doOCR(image);
         //match result from ocr to nearest mod name, ocr tends to add stuff like tm
         //because of little white stripes in the background of the image which the processing picks up as text
-        ExtractedResult modName = FuzzySearch.extractOne(ocr, modNames);
+        ExtractedResult modName = FuzzySearch.extractOne(ocr, modNames.keySet());
         logger.info("OCR: {}, {}", modName.getString(), modName.getScore());
 
-        //just for testing so i can see the output image
-        File outputfile = new File("image.jpg");
-        try {
-            ImageIO.write(image, "jpg", outputfile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return new AbstractMap.SimpleEntry<>(modName.getString(), modNames.get(modName.getString()));
     }
 
 }
