@@ -1,5 +1,6 @@
 package gb.bourne2code.warframe.opencv.utils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -8,6 +9,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.OptionalDouble;
 import java.util.logging.Logger;
 
 public class WarframeMarketAPI {
@@ -55,7 +60,21 @@ public class WarframeMarketAPI {
             }
 
             //finally fucking parse the json
-            JSONObject json = new JSONObject(response.toString()).getJSONObject("payload");
+            JSONArray json = new JSONObject(response.toString()).getJSONObject("payload").getJSONArray("orders");
+
+            List<Integer> prices = new ArrayList<>();
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject order = json.getJSONObject(i);
+                String orderType = order.getString("order_type");
+                int price = order.getInt("platinum");
+                if (orderType.equals("sell")) {
+                    prices.add(price);
+                }
+            }
+
+            double average = prices.stream().mapToDouble(i -> i).average().orElse(0.0);
+            return (int) average;
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

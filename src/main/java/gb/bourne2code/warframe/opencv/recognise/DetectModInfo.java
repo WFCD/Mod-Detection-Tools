@@ -70,7 +70,7 @@ public class DetectModInfo {
         if (json.has("wikiaUrl")) {
             wikiaUrl = json.getString("wikiaUrl").replace("https://warframe.fandom.com/wiki/", "").toLowerCase();
         } else {
-            wikiaUrl = name.replace(" ", "_");
+            wikiaUrl = name.replace(" ", "_").replaceAll("[^a-zA-Z0-9]", " ").toLowerCase();
         }
         return new AbstractMap.SimpleEntry<>(name, wikiaUrl);
     }
