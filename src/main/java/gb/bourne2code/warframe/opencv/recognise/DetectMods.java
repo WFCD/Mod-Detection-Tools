@@ -1,6 +1,7 @@
 package gb.bourne2code.warframe.opencv.recognise;
 
 import gb.bourne2code.warframe.opencv.exceptions.BaseRuntimeException;
+import gb.bourne2code.warframe.opencv.utils.WarframeMarketAPI;
 import net.sourceforge.tess4j.TesseractException;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_objdetect;
@@ -11,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.AbstractMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
@@ -38,7 +41,7 @@ public class DetectMods {
     }
 
     //Lets do some recognising!
-    public String run(String stageFile, double scale, int neighbours) {
+    public Map.Entry<String, Integer> run(String stageFile, double scale, int neighbours, String platform) {
         logger.debug("\nRunning Mod Detection");
         //weird bugs are weird -getClassLoader.getPath() prefixes the path with a / - this is obviously a bug with Windows/Java, but this work around works
         String cascadeFilePath = new File(Objects.requireNonNull(
@@ -65,12 +68,14 @@ public class DetectMods {
         DetectModInfo modInfo = new DetectModInfo();
 
         opencv_core.Mat rectangleMat = image.clone();
+        int totalPrice = 0;
         // Draw a bounding box around each mod. And cross your fingers. And toes. And your pet's toes. If they have toes...
         for (int i=0;i<modDetections.size();i++) {
             opencv_core.Rect rect = modDetections.get(i);
             opencv_core.Mat subMatrix = image.apply(rect);
             try {
-                modInfo.detectModName(subMatrix);
+                Map.Entry<String, String> mod = modInfo.detectModName(subMatrix);
+                totalPrice += WarframeMarketAPI.getPrice(mod.getValue(), platform);
             } catch (TesseractException e) {
                 e.printStackTrace();
             }
@@ -87,6 +92,6 @@ public class DetectMods {
         imwrite(fileLocation, image);
 
         modDetector.close();
-        return fileLocation;
+        return new AbstractMap.SimpleEntry<>(fileLocation, totalPrice);
     }
 }

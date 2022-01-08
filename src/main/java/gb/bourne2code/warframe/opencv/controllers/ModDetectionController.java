@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.Map;
 
 /** Controls the main application screen */
 public class ModDetectionController {
@@ -30,13 +31,17 @@ public class ModDetectionController {
     @FXML
     public Label neighbourLabel;
     @FXML
+    public Label totalWorthLabel;
+    @FXML
     private ImageView imageViewer;
 
     private Manager manager;
     private DetectMods recogniser;
+    private String platform;
 
-    public void initScreen(Manager manager, String fileLocation) {
+    public void initScreen(Manager manager, String fileLocation, String platform) {
         this.manager = manager;
+        this.platform = platform;
 
         setupImage(fileLocation);
 
@@ -122,10 +127,12 @@ public class ModDetectionController {
         String cascadeValue = (String) stageChoice.getValue(); //cascadexx
         double scale = scaleSlider.getValue();
         int neighbours = Math.toIntExact(Math.round(neighbourSlider.getValue()));
-        String fileLocation = recogniser.run(cascadeValue, scale, neighbours);
-        Image image = new Image("file:" + fileLocation);
+        Map.Entry<String, Integer> results = recogniser.run(cascadeValue, scale, neighbours, platform);
+        Image image = new Image("file:" + results.getKey());
         imageViewer.setImage(image);
         imageViewer.fitWidthProperty().bind(imageViewer.getScene().widthProperty().subtract(200));
+
+        totalWorthLabel.setText("Total worth: " + results.getValue());
     }
 
     public void increaseScale(ActionEvent actionEvent) {

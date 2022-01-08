@@ -32,7 +32,7 @@ public class Manager {
         }
     }
 
-    public void showOpenCvScene(String fileLocation) {
+    public void showOpenCvScene(String fileLocation, String platform) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("fxml/opencv.fxml")
@@ -40,7 +40,7 @@ public class Manager {
             scene.setRoot((Parent) loader.load());
             ModDetectionController controller =
                     loader.<ModDetectionController>getController();
-            controller.initScreen(this, fileLocation);
+            controller.initScreen(this, fileLocation, platform);
 
         } catch (IOException ex) {
             Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);

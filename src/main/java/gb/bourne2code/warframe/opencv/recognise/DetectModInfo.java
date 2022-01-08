@@ -58,12 +58,21 @@ public class DetectModInfo {
             String jsonText = IOUtils.toString(is, StandardCharsets.UTF_8);
             JSONArray json = new JSONArray(jsonText);
             //convert list of mod items to mod names
-            json.forEach(o -> modNames.put(
-                    ((JSONObject) o).getString("name"),
-                    ((JSONObject) o).getString("wikiaUrl").replace("http://warframe.wikia.com/wiki/", "")));
-            // use wikia url here because it should contain the same id as warframe market
+            json.forEach(o -> modNames.put(getModEntry((JSONObject) o).getKey(), getModEntry((JSONObject) o).getValue()));
             logger.info("Mod names: {}", modNames);
         } catch (IOException ignored) { /*should never happen **/ }
+    }
+
+    private Map.Entry<String, String> getModEntry(JSONObject json) {
+        String name = json.getString("name");
+        String wikiaUrl;
+        // use wikia url here because it should contain the same id as warframe market
+        if (json.has("wikiaUrl")) {
+            wikiaUrl = json.getString("wikiaUrl").replace("https://warframe.fandom.com/wiki/", "").toLowerCase();
+        } else {
+            wikiaUrl = name.replace(" ", "_");
+        }
+        return new AbstractMap.SimpleEntry<>(name, wikiaUrl);
     }
 
     public Map.Entry<String, String> detectModName(opencv_core.Mat mat) throws TesseractException {
