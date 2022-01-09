@@ -7,7 +7,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
+import javax.imageio.ImageIO;
 import java.io.File;
+import java.io.IOException;
 
 /** Controls the login screen */
 public class FileSelectController {
@@ -30,7 +32,7 @@ public class FileSelectController {
         }
     }
 
-    public void loadOpenCvScene(ActionEvent actionEvent) {
-        manager.showOpenCvScene(fileLocation.getText(), platformSelect.getValue().toString());
+    public void loadOpenCvScene(ActionEvent actionEvent) throws IOException {
+        manager.showOpenCvScene(ImageIO.read(new File(fileLocation.getText())), platformSelect.getValue().toString());
     }
 }

@@ -4,10 +4,17 @@ import gb.bourne2code.warframe.opencv.exceptions.BaseRuntimeException;
 import gb.bourne2code.warframe.opencv.utils.WarframeMarketAPI;
 import net.sourceforge.tess4j.TesseractException;
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_objdetect;
+import org.opencv.core.MatOfByte;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,13 +31,13 @@ import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
  * Created by BourneID on 22/01/2017.
  */
 public class DetectMods {
-    private String modImagePath;
+    private BufferedImage modImage;
     private Path tempDirPath;
     private static Logger logger = LoggerFactory.getLogger(DetectMods.class);
 
     //Create the Detect Mods engine. If the image needs to be change, create a new instance of Detect Mods
-    public DetectMods(String image) {
-        this.modImagePath = image;
+    public DetectMods(BufferedImage image) {
+        this.modImage = image;
 
         try {
             tempDirPath = Files.createTempDirectory("optv-");
@@ -41,7 +48,7 @@ public class DetectMods {
     }
 
     //Lets do some recognising!
-    public Map.Entry<String, Integer> run(String stageFile, double scale, int neighbours, String platform) {
+    public Map.Entry<String, Integer> run(String stageFile, double scale, int neighbours, String platform) throws IOException {
         logger.debug("\nRunning Mod Detection");
         //weird bugs are weird -getClassLoader.getPath() prefixes the path with a / - this is obviously a bug with Windows/Java, but this work around works
         String cascadeFilePath = new File(Objects.requireNonNull(
@@ -51,8 +58,13 @@ public class DetectMods {
         //Create a new CascadeClassifier based of the cascades created - Which took over 35 computing days to complete....
         opencv_objdetect.CascadeClassifier modDetector = new opencv_objdetect.CascadeClassifier(cascadeFilePath);
 
+
         //We need to create a Mat based on the image as, hopefully, we'll be drawing on it real soon
-        opencv_core.Mat image = imread(modImagePath);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(modImage, "jpg", byteArrayOutputStream);
+        byteArrayOutputStream.flush();
+        opencv_core.Mat image = opencv_imgcodecs.imdecode(new opencv_core.Mat(byteArrayOutputStream.toByteArray()), opencv_imgcodecs.CV_LOAD_IMAGE_UNCHANGED);
+
 
         //A list of rectangles we will draw if the detection is successful
         opencv_core.RectVector modDetections = new opencv_core.RectVector();

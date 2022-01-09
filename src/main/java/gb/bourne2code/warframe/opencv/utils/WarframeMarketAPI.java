@@ -1,6 +1,7 @@
 package gb.bourne2code.warframe.opencv.utils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -71,7 +72,10 @@ public class WarframeMarketAPI {
             }
 
             //finally fucking parse the json
-            JSONArray json = new JSONObject(response.toString()).getJSONObject("payload").getJSONArray("orders");
+            JSONArray json;
+            try {
+                json = new JSONObject(response.toString()).getJSONObject("payload").getJSONArray("orders");
+            } catch (JSONException e) { return 0; }
 
             List<Integer> prices = new ArrayList<>();
             for (int i = 0; i < json.length(); i++) {

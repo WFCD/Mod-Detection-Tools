@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ public class Manager {
         }
     }
 
-    public void showOpenCvScene(String fileLocation, String platform) {
+    public void showOpenCvScene(BufferedImage image, String platform) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("fxml/opencv.fxml")
@@ -40,7 +41,7 @@ public class Manager {
             scene.setRoot((Parent) loader.load());
             ModDetectionController controller =
                     loader.<ModDetectionController>getController();
-            controller.initScreen(this, fileLocation, platform);
+            controller.initScreen(this, image, platform);
 
         } catch (IOException ex) {
             Logger.getLogger(Manager.class.getName()).log(Level.SEVERE, null, ex);
