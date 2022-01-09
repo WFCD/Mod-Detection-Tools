@@ -23,6 +23,11 @@ public class WarframeMarketAPI {
     private static final String BASE = "https://api.warframe.market/v1";
     private static final String ITEMS = BASE + "/items";
 
+    /**
+     * Get the URL to retrieve the orders for a mod.
+     * @param itemName  item id
+     * @return url to get the orders for the item
+     */
     private static URL getOrdersUrl(String itemName) {
         try {
             return new URL(ITEMS + "/" + itemName + "/orders");
@@ -30,6 +35,12 @@ public class WarframeMarketAPI {
         return null;
     }
 
+    /**
+     * Get the current average platinum price of a mod.
+     * @param item  Mod id
+     * @param platform  Platform, defaults to pc (choice of pc, xbox, ps4, or switch)
+     * @return  Average platinum price of the mod
+     */
     public static int getPrice(String item, String platform) {
         HttpURLConnection connection;
         try {

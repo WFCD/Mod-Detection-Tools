@@ -33,6 +33,10 @@ public class DetectModInfo {
     private static final HashMap<String, String> modNames = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(DetectModInfo.class);
 
+    /**
+     * Loads tesseract files and settings
+     * Loads the mod names from the json file
+     */
     public DetectModInfo() {
         //set some tesseract options
         File tmpFolder = LoadLibs.extractTessResources("win32-x86-64");
@@ -63,6 +67,11 @@ public class DetectModInfo {
         } catch (IOException ignored) { /*should never happen **/ }
     }
 
+    /**
+     * Converts json from the mods.json file to a map entry of a mod name and a mod id
+     * @param json  json object with mod info
+     * @return      key: mod name, value: mod id
+     */
     private Map.Entry<String, String> getModEntry(JSONObject json) {
         String name = json.getString("name");
         String wikiaUrl;
@@ -75,6 +84,12 @@ public class DetectModInfo {
         return new AbstractMap.SimpleEntry<>(name, wikiaUrl);
     }
 
+    /**
+     *  Detects the mod name from the image using Tesseract OCR
+     * @param mat   the image to be processed
+     * @return      map entry with key and value of the mod name and id
+     * @throws TesseractException
+     */
     public Map.Entry<String, String> detectModName(opencv_core.Mat mat) throws TesseractException {
         //convert Matrix to BufferedImage for Tesseract processing
         OpenCVFrameConverter.ToMat converterToMat = new OpenCVFrameConverter.ToMat();
