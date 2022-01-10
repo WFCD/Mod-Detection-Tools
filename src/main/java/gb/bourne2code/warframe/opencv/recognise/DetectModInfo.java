@@ -142,7 +142,7 @@ public class DetectModInfo {
         List<String> fuzzyList = new ArrayList<>(modNames.keySet());
 
         //check if primed or not, use the first 10 characters in case of tesseract errors
-        int primedChance = FuzzySearch.partialRatio(ocr.substring(0, 10), "Primed");
+        int primedChance = FuzzySearch.partialRatio(ocr.substring(0, Math.min(ocr.length(), 10)), "Primed");
         if (primedChance > 80) {
             fuzzyList = new ArrayList<>(primedModNames.keySet());
         }

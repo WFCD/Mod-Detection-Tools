@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -83,8 +84,13 @@ public class WarframeMarketAPI {
                 }
             }
 
-            double average = prices.stream().mapToDouble(i -> i).average().orElse(0.0);
-            return (int) average;
+            Arrays.sort(prices.toArray());
+            double median;
+            if (prices.size() % 2 == 0)
+                median = ((double) prices.get(prices.size() / 2) + (double) prices.get(prices.size() / 2 - 1))/2;
+            else
+                median = (double) prices.get(prices.size() / 2);
+            return (int) median;
 
         } catch (IOException e) {
             if (connection != null) {
