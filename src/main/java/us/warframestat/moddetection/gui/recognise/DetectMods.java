@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui.recognise;
+package us.warframestat.moddetection.gui.recognise;
 
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
@@ -19,8 +19,8 @@ import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_objdetect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import us.warframestat.moddetectiongui.exceptions.BaseRuntimeException;
-import us.warframestat.moddetectiongui.utils.WarframeMarketAPI;
+import us.warframestat.moddetection.gui.exceptions.BaseRuntimeException;
+import us.warframestat.moddetection.gui.utils.WarframeMarketAPI;
 
 /** Created by BourneID on 22/01/2017. */
 public class DetectMods {

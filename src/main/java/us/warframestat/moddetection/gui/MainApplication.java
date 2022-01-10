@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui;
+package us.warframestat.moddetection.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

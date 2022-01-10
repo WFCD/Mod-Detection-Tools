@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui.utils;
+package us.warframestat.moddetection.gui.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

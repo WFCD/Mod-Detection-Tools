@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui.controllers;
+package us.warframestat.moddetection.gui.controllers;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
-import us.warframestat.moddetectiongui.Manager;
+import us.warframestat.moddetection.gui.Manager;
 
 /** Controls the login screen */
 public class FileSelectController {

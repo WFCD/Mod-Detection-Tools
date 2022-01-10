@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui;
+package us.warframestat.moddetection.gui;
 
 public class RunApplication {
   /**

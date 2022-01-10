@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui;
+package us.warframestat.moddetection.gui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -7,8 +7,8 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import us.warframestat.moddetectiongui.controllers.FileSelectController;
-import us.warframestat.moddetectiongui.controllers.ModDetectionController;
+import us.warframestat.moddetection.gui.controllers.FileSelectController;
+import us.warframestat.moddetection.gui.controllers.ModDetectionController;
 
 /** Scene Manager, tells the scenes when to display * */
 public class Manager {

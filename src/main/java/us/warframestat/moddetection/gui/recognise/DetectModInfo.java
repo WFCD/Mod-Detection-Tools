@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui.recognise;
+package us.warframestat.moddetection.gui.recognise;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

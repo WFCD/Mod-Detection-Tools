@@ -1,4 +1,4 @@
-package us.warframestat.moddetectiongui.controllers;
+package us.warframestat.moddetection.gui.controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -17,9 +17,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javax.imageio.ImageIO;
-import us.warframestat.moddetectiongui.MainApplication;
-import us.warframestat.moddetectiongui.Manager;
-import us.warframestat.moddetectiongui.recognise.DetectMods;
+
+import us.warframestat.moddetection.gui.MainApplication;
+import us.warframestat.moddetection.gui.Manager;
+import us.warframestat.moddetection.gui.recognise.DetectMods;
 
 /** Controls the main application screen */
 public class ModDetectionController {
