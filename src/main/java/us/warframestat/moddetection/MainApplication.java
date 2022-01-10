@@ -1,4 +1,4 @@
-package gb.bourne2code.warframe.opencv;
+package us.warframestat.moddetection;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

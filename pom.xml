@@ -20,7 +20,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>gb.bourne2code.warframe.opencv.MainApplication</mainClass>
+                    <mainClass>us.warframestat.moddetection.MainApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>

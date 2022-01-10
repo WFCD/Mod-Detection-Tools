@@ -1,19 +1,16 @@
-package gb.bourne2code.warframe.opencv.recognise;
+package us.warframestat.moddetection.recognise;
 
-import gb.bourne2code.warframe.opencv.exceptions.BaseRuntimeException;
-import gb.bourne2code.warframe.opencv.utils.WarframeMarketAPI;
+import us.warframestat.moddetection.exceptions.BaseRuntimeException;
+import us.warframestat.moddetection.utils.WarframeMarketAPI;
 import net.sourceforge.tess4j.TesseractException;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_imgcodecs;
 import org.bytedeco.javacpp.opencv_objdetect;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
