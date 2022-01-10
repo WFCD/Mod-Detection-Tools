@@ -18,7 +18,7 @@ Change the sliders and cascade dropdown to tune the settings so it detects all t
 ## OpenCV? Image Recognition? 
 Yes, as an overkill for mod recognition I've trained an OpenCV Cascade file to recognise any Warframe mod (standard, prime and riven mods). The cascade took over 35 CPU days to create. 
 
-##Tess4J?
+## Tess4J?
 Tess4J is a Java library that uses the Tesseract OCR engine to read text from images. 
 
 This means you must have Tesseract (tesseract, tesseract-data-eng) for this to function properly.
