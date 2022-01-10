@@ -21,6 +21,7 @@ Yes, as an overkill for mod recognition I've trained an OpenCV Cascade file to r
 ##Tess4J?
 Tess4J is a Java library that uses the Tesseract OCR engine to read text from images. 
 
+This means you must have Tesseract (tesseract, tesseract-data-eng) for this to function properly.
 
 ## Important Information
 I'm new to JavaFx (been a backend Java dev for a long time) so there may be parts of JavaFX which breaches the acceptable '[wtf](https://s-media-cache-ak0.pinimg.com/236x/ff/68/a5/ff68a5a9d71c3eea9ae4f9e8fed469d1.jpg)' code review scale. 
