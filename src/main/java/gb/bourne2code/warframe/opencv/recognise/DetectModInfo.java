@@ -48,6 +48,7 @@ public class DetectModInfo {
         logger.info(tmpFolder.getAbsolutePath());
         tesseract = new Tesseract();
         tesseract.setLanguage("eng");
+        tesseract.SetTessVariable("user_defined_dpi", "70");
 
         Path dataDirectory;
         try {
