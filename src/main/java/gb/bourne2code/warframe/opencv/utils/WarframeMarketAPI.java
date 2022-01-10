@@ -11,15 +11,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class WarframeMarketAPI {
     private WarframeMarketAPI() {}
-
-    private static Logger logger = Logger.getLogger(WarframeMarketAPI.class.getName());
+    private static final Logger logger = Logger.getLogger(WarframeMarketAPI.class.getName());
 
     private static final String BASE = "https://api.warframe.market/v1";
     private static final String ITEMS = BASE + "/items";
@@ -43,6 +41,11 @@ public class WarframeMarketAPI {
      * @return  Average platinum price of the mod
      */
     public static int getPrice(String item, String platform) {
+        //check for riven
+        if (Objects.equals(item, "riven_mod")) {
+            return 0;
+        }
+
         HttpURLConnection connection;
         try {
             URL url = getOrdersUrl(item);
@@ -71,7 +74,7 @@ public class WarframeMarketAPI {
                 return getPrice(item, platform);
             }
 
-            //finally fucking parse the json
+            //finally parse the json
             JSONArray json;
             try {
                 json = new JSONObject(response.toString()).getJSONObject("payload").getJSONArray("orders");

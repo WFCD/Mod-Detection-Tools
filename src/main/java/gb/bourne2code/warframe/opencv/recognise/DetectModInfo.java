@@ -59,30 +59,10 @@ public class DetectModInfo {
         //make list of json mod names and weapon names
         InputStream modIS = ClassLoader.getSystemResourceAsStream("tesseract/Mods.json");
 
-        //weapons
-        InputStream meleeIS = ClassLoader.getSystemResourceAsStream("tesseract/Melee.json");
-        InputStream primaryIS = ClassLoader.getSystemResourceAsStream("tesseract/Primary.json");
-        InputStream secondaryIS = ClassLoader.getSystemResourceAsStream("tesseract/Secondary.json");
-        InputStream archGunIS = ClassLoader.getSystemResourceAsStream("tesseract/Arch-Gun.json");
-        InputStream sentinelWeaponsIS = ClassLoader.getSystemResourceAsStream("tesseract/SentinelWeapons.json");
         //should never be null, but i dont like stupid ide warnings
         assert modIS != null;
 
-        //weapons
-        assert meleeIS != null;
-        assert primaryIS != null;
-        assert secondaryIS != null;
-        assert archGunIS != null;
-        assert sentinelWeaponsIS != null;
-
         modNames.putAll(convertInputStreamToList(modIS));
-
-        //weapons
-        weaponNames.putAll(convertInputStreamToList(meleeIS));
-        weaponNames.putAll(convertInputStreamToList(primaryIS));
-        weaponNames.putAll(convertInputStreamToList(secondaryIS));
-        weaponNames.putAll(convertInputStreamToList(archGunIS));
-        weaponNames.putAll(convertInputStreamToList(sentinelWeaponsIS));
 
         logger.info("Mod names: {}", modNames);
         logger.info("Weapon names: {}", weaponNames);
@@ -153,33 +133,10 @@ public class DetectModInfo {
         //because of little white stripes in the background of the image which the processing picks up as text
         ExtractedResult modName = FuzzySearch.extractOne(ocr, modNames.keySet());
 
-        if (modName.getScore() < 30) {
-            //most likely a riven
-            //split into weapon name and riven mod name
-            List<String> rivenString = Arrays.asList(ocr.split(" "));
-            logger.info("Riven detected: {}", rivenString);
-            if (rivenString.size() == 2) {
-                //riven
-                String[] rivenName = rivenString.get(1).split("-");
-                List<ExtractedResult> results = new ArrayList<>();
-
-                //weapon
-                results.add(FuzzySearch.extractOne(rivenName[0], weaponNames.keySet()));
-
-                //riven
-                for (String name : rivenName) {
-                    //split by uppercase letter
-                    for (String attribute : name.split("(?=\\p{Upper})")) {
-                        //match result from ocr to nearest riven name
-                        logger.info("riven attribute: {}", attribute);
-                        results.add(FuzzySearch.extractOne(attribute, rivenNames));
-                    }
-                }
-                int averageScore = results.stream().mapToInt(ExtractedResult::getScore).sum() / results.size();
-                String weaponName = results.get(0).getString() ;
-                modName = new ExtractedResult(weaponName, averageScore, 0);
-            }
-            
+        if (modName.getScore() < 70) {
+            //most likely a riven mod
+            logger.info("OCR: {}", "Riven Mod");
+            return new AbstractMap.SimpleEntry<>("Riven Mod", "riven_mod");
         }
 
         logger.info("OCR: {}, {}", modName.getString(), modName.getScore());
