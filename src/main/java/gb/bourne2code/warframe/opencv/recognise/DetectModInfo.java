@@ -16,6 +16,7 @@ import org.opencv.core.CvType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 public class DetectModInfo {
     private final Tesseract tesseract;
     private static final HashMap<String, String> modNames = new HashMap<>();
-    private static final HashMap<String, String> weaponNames = new HashMap<>();
+    private static final HashMap<String, String> primedModNames = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(DetectModInfo.class);
 
     private static final List<String> rivenNames = Arrays.asList("Ampi", "Manti", "Argi", "Pura", "Geli", "Tori", "Uti", "Tempi", "Crita", "Pleci", "Acri", "Visi", "Vexi", "Igni", "Exi", "Croni", "Conci", "Magna", "Arma", "Sati", "Toxi", "Lexi", "Insi", "Feva", "Locti", "Sci", "Hexa", "Deci", "Zeti", "Hera");
@@ -62,15 +63,20 @@ public class DetectModInfo {
         //should never be null, but i dont like stupid ide warnings
         assert modIS != null;
 
-        modNames.putAll(convertInputStreamToList(modIS));
+        convertInputStreamToList(modIS).forEach((k, v) -> {
+            if (k.startsWith("Primed")) {
+                primedModNames.put(k, v);
+            } else {
+                modNames.put(k, v);
+            }
+        });
 
         logger.info("Mod names: {}", modNames);
-        logger.info("Weapon names: {}", weaponNames);
     }
 
     /**
      * Gets List from inputstream
-     * @return  Map with name and id
+     * @return  Map with name, id, and primed
      */
     public static Map<String, String> convertInputStreamToList(InputStream is) {
         HashMap<String, String> map = new HashMap<>();
@@ -79,7 +85,11 @@ public class DetectModInfo {
             String jsonText = IOUtils.toString(is, StandardCharsets.UTF_8);
             JSONArray json = new JSONArray(jsonText);
             //convert list
-            json.forEach(o -> map.put(getModEntry((JSONObject) o).getKey(), getModEntry((JSONObject) o).getValue()));
+            json.forEach(o -> {
+                JSONObject jsonObject = (JSONObject) o;
+                Map.Entry<String, String> modEntry = getModEntry(jsonObject);
+                map.put(modEntry.getKey(), modEntry.getValue());
+            });
         } catch (IOException ignored) { /*should never happen **/ }
         return map;
     }
@@ -114,7 +124,7 @@ public class DetectModInfo {
         Java2DFrameConverter converterToImage = new Java2DFrameConverter();
 
         //cut image for only text
-        mat = mat.apply(new opencv_core.Range(40, mat.rows()-35), new opencv_core.Range(20, mat.cols()-10));
+        mat = mat.apply(new opencv_core.Range(35, mat.rows()-20), new opencv_core.Range(20, mat.cols()-10));
 
         //make grayscale
         opencv_core.Mat gray = new opencv_core.Mat(mat.size(), CvType.CV_8U);
@@ -129,9 +139,19 @@ public class DetectModInfo {
 
         //get mod name
         String ocr = tesseract.doOCR(image);
+        logger.info("OCR: {}", ocr);
+        List<String> fuzzyList = new ArrayList<>(modNames.keySet());
+
+        //check if primed or not, use the first 10 characters in case of tesseract errors
+        int primedChance = FuzzySearch.partialRatio(ocr.substring(0, 10), "Primed");
+        logger.info("Primed chance: {}", primedChance);
+        if (primedChance > 80) {
+            fuzzyList = new ArrayList<>(primedModNames.keySet());
+        }
+
         //match result from ocr to nearest mod name, ocr tends to add stuff like tm
         //because of little white stripes in the background of the image which the processing picks up as text
-        ExtractedResult modName = FuzzySearch.extractOne(ocr, modNames.keySet());
+        ExtractedResult modName = FuzzySearch.extractOne(ocr, fuzzyList);
 
         if (modName.getScore() < 70) {
             //most likely a riven mod

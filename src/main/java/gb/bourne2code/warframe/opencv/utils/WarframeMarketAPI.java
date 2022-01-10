@@ -46,7 +46,7 @@ public class WarframeMarketAPI {
             return 0;
         }
 
-        HttpURLConnection connection;
+        HttpURLConnection connection = null;
         try {
             URL url = getOrdersUrl(item);
 
@@ -66,13 +66,6 @@ public class WarframeMarketAPI {
                 response.append(inputLine);
             }
             in.close();
-
-            //check for rate limit, if so, wait and try again
-            if (connection.getResponseCode() == 503) {
-                logger.info("RIP: Rate limited. Retrying in 5 seconds.");
-                Thread.sleep(5000);
-                return getPrice(item, platform);
-            }
 
             //finally parse the json
             JSONArray json;
@@ -94,12 +87,22 @@ public class WarframeMarketAPI {
             return (int) average;
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Thread.currentThread().interrupt();
+            if (connection != null) {
+                //check for rate limit, if so, wait and try again
+                try {
+                    if (connection.getResponseCode() == 503) {
+                        logger.info("RIP: Rate limited. Retrying in 5 seconds.");
+                        Thread.sleep(5000);
+                        return getPrice(item, platform);
+                    }
+                } catch (InterruptedException | IOException error2) {
+                    e.printStackTrace();
+                    if (error2 instanceof InterruptedException) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
         }
-
         return 0;
     }
 
