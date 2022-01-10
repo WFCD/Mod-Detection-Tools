@@ -139,12 +139,10 @@ public class DetectModInfo {
 
         //get mod name
         String ocr = tesseract.doOCR(image);
-        logger.info("OCR: {}", ocr);
         List<String> fuzzyList = new ArrayList<>(modNames.keySet());
 
         //check if primed or not, use the first 10 characters in case of tesseract errors
         int primedChance = FuzzySearch.partialRatio(ocr.substring(0, 10), "Primed");
-        logger.info("Primed chance: {}", primedChance);
         if (primedChance > 80) {
             fuzzyList = new ArrayList<>(primedModNames.keySet());
         }
@@ -159,7 +157,7 @@ public class DetectModInfo {
             return new AbstractMap.SimpleEntry<>("Riven Mod", "riven_mod");
         }
 
-        logger.info("OCR: {}, {}", modName.getString(), modName.getScore());
+        logger.info("OCR: {}, Confidence: {}", modName.getString(), modName.getScore());
 
         return new AbstractMap.SimpleEntry<>(modName.getString(), modNames.get(modName.getString()));
     }
