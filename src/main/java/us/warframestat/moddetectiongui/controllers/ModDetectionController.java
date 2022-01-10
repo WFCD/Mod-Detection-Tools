@@ -1,7 +1,7 @@
-package gb.bourne2code.warframe.opencv.controllers;
+package us.warframestat.moddetectiongui.controllers;
 
-import gb.bourne2code.warframe.opencv.MainApplication;
-import gb.bourne2code.warframe.opencv.Manager;
+import us.warframestat.moddetectiongui.MainApplication;
+import us.warframestat.moddetectiongui.Manager;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,9 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import gb.bourne2code.warframe.opencv.recognise.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import us.warframestat.moddetectiongui.recognise.DetectMods;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

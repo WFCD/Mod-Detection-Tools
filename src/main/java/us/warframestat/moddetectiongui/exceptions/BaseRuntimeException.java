@@ -1,4 +1,4 @@
-package gb.bourne2code.warframe.opencv.exceptions;
+package us.warframestat.moddetectiongui.exceptions;
 
 /**
  * Created by BourneID on 23/01/2017.

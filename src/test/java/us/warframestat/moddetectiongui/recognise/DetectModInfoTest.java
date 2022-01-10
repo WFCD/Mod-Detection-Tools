@@ -1,4 +1,4 @@
-package gb.bourne2code.warframe.opencv.recognise;
+package us.warframestat.moddetectiongui.recognise;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package gb.bourne2code.warframe.opencv.controllers;
+package us.warframestat.moddetectiongui.controllers;
 
-import gb.bourne2code.warframe.opencv.Manager;
+import us.warframestat.moddetectiongui.Manager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
