@@ -2,6 +2,7 @@ package gb.bourne2code.warframe.opencv.controllers;
 
 import gb.bourne2code.warframe.opencv.MainApplication;
 import gb.bourne2code.warframe.opencv.Manager;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -14,8 +15,12 @@ import gb.bourne2code.warframe.opencv.recognise.*;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Map;
 
 /** Controls the main application screen */
 public class ModDetectionController {
@@ -30,15 +35,19 @@ public class ModDetectionController {
     @FXML
     public Label neighbourLabel;
     @FXML
+    public Label totalWorthLabel;
+    @FXML
     private ImageView imageViewer;
 
     private Manager manager;
     private DetectMods recogniser;
+    private String platform;
 
-    public void initScreen(Manager manager, String fileLocation) {
+    public void initScreen(Manager manager, BufferedImage image, String platform) {
         this.manager = manager;
+        this.platform = platform;
 
-        setupImage(fileLocation);
+        setupImage(image);
 
         setupDragDrop();
 
@@ -90,10 +99,10 @@ public class ModDetectionController {
             boolean success = false;
             if (db.hasFiles()) {
                 success = true;
-                String filePath = null;
                 for (File file:db.getFiles()) {
-                    filePath = file.getAbsolutePath();
-                    setupImage(filePath);
+                    try {
+                        setupImage(ImageIO.read(file));
+                    } catch (IOException ignored) { /* invalid image */ }
                 }
             }
             event.setDropCompleted(success);
@@ -102,50 +111,53 @@ public class ModDetectionController {
     }
 
     //setup the image viewer and openCV recogniser
-    private void setupImage(String fileLocation) {
-        Image image = new Image("file:" + fileLocation);
-        imageViewer.setImage(image);
+    private void setupImage(BufferedImage image) {
+        imageViewer.setImage(SwingFXUtils.toFXImage(image, null));
         imageViewer.fitWidthProperty().bind(imageViewer.getScene().widthProperty().subtract(200));
         MainApplication.setHeight(400);
         MainApplication.setWidth(1200);
         stageChoice.getSelectionModel().selectLast();
 
-        recogniser = new DetectMods(fileLocation); //needs image
+        recogniser = new DetectMods(image); //needs image
     }
 
     private void runModFinder() {
-        runModFinder(null);
+        try {
+            runModFinder(null);
+        } catch (IOException ignored) { /* invalid image */ }
     }
 
     // run the image against OpenCV with the adjustable values
-    private void runModFinder(ActionEvent actionEvent) {
+    private void runModFinder(ActionEvent actionEvent) throws IOException {
         String cascadeValue = (String) stageChoice.getValue(); //cascadexx
         double scale = scaleSlider.getValue();
         int neighbours = Math.toIntExact(Math.round(neighbourSlider.getValue()));
-        String fileLocation = recogniser.run(cascadeValue, scale, neighbours);
-        Image image = new Image("file:" + fileLocation);
+        Map.Entry<String, Integer> results = recogniser.run(cascadeValue, scale, neighbours, platform);
+        Image image = new Image("file:" + results.getKey());
         imageViewer.setImage(image);
         imageViewer.fitWidthProperty().bind(imageViewer.getScene().widthProperty().subtract(200));
+
+        totalWorthLabel.setText("Total worth: " + results.getValue());
     }
 
-    public void increaseScale(ActionEvent actionEvent) {
+    public void increaseScale(ActionEvent actionEvent) throws IOException {
         scaleSlider.setValue(scaleSlider.getValue() + 0.001);
-        runModFinder(actionEvent);
+        runModFinder();
     }
 
     public void decreaseScale(ActionEvent actionEvent) {
         scaleSlider.setValue(scaleSlider.getValue() - 0.001);
-        runModFinder(actionEvent);
+        runModFinder();
     }
 
     public void increaseNeighbour(ActionEvent actionEvent) {
         neighbourSlider.setValue(neighbourSlider.getValue() + 1);
-        runModFinder(actionEvent);
+        runModFinder();
     }
 
     public void decreaseNeighbour(ActionEvent actionEvent) {
         neighbourSlider.setValue(neighbourSlider.getValue() - 1);
-        runModFinder(actionEvent);
+        runModFinder();
     }
 
     public void runModFinderAction(ActionEvent actionEvent) {
