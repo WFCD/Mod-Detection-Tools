@@ -1,7 +1,7 @@
-package gb.bourne2code.warframe.opencv;
+package us.warframestat.moddetection;
 
-import gb.bourne2code.warframe.opencv.controllers.FileSelectController;
-import gb.bourne2code.warframe.opencv.controllers.ModDetectionController;
+import us.warframestat.moddetection.controllers.FileSelectController;
+import us.warframestat.moddetection.controllers.ModDetectionController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

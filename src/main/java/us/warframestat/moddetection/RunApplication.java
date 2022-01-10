@@ -1,4 +1,4 @@
-package gb.bourne2code.warframe.opencv;
+package us.warframestat.moddetection;
 
 public class RunApplication {
     /**

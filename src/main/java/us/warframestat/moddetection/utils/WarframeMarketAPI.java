@@ -1,4 +1,4 @@
-package gb.bourne2code.warframe.opencv.utils;
+package us.warframestat.moddetection.utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
