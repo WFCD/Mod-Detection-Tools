@@ -6,8 +6,8 @@
     <servers>
         <server>
             <id>github</id>
-            <username>${MAVEN_USER}</username>
-            <password>${MAVEN_TOKEN}</password>
+            <username>${env.MAVEN_USER}</username>
+            <password>${env.MAVEN_TOKEN}</password>
         </server>
     </servers>
 </settings>
