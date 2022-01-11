@@ -1,6 +1,5 @@
 package us.warframestat.moddetection.gui;
 
-import java.io.IOException;
 
 public class RunApplication {
   /**
