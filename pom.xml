@@ -58,6 +58,12 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/WFCD/mod-detection-api</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -79,7 +85,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <lineSeparator>\n</lineSeparator>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <encoding>UTF-8</encoding>
                     <sortProperties>true</sortProperties>
                     <sortDependencies>scope,groupId,artifactId</sortDependencies>
                     <sortPlugins>groupId,artifactId</sortPlugins>
