@@ -20,4 +20,7 @@ jobs:
           MAVEN_TOKEN: ${{ secrets.GH_TOKEN }}
           MAVEN_USER: ${{ secrets.GIT_AUTHOR_NAME }}
       - name: Verify
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots verify -s .mvn/settings.xml
+        env:
+          MAVEN_TOKEN: ${{ secrets.GH_TOKEN }}
+          MAVEN_USER: ${{ secrets.GIT_AUTHOR_NAME }}
