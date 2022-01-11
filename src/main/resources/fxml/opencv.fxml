@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="us.warframestat.moddetectiongui.controllers.ModDetectionController" >
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="us.warframestat.moddetection.gui.controllers.ModDetectionController" >
     <BorderPane.margin>
         <Insets bottom="5" left="5" right="5" top="5" />
     </BorderPane.margin>
