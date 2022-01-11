@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '16'
-          distribution: 'termurin'
+          distribution: 'temurin'
       - name: Verify
         run: mvn --batch-mode --update-snapshots verify -s .mvn/settings.xml
         env:
