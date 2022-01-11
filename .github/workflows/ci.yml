@@ -13,5 +13,8 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: wfcd-bot-boi # env variable for username in deploy
+          server-password: GH_TOKEN # env variable for token in deploy
       - name: Verify
         run: mvn --batch-mode --update-snapshots verify
