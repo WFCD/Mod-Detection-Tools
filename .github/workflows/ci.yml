@@ -13,12 +13,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: MAVEN_USER # env variable for username in deploy
-          server-password: MAVEN_TOKEN # env variable for token in deploy
-        env:
-          MAVEN_TOKEN: ${{ secrets.GH_TOKEN }}
-          MAVEN_USER: ${{ secrets.GIT_AUTHOR_NAME }}
       - name: Verify
         run: mvn --batch-mode --update-snapshots verify -s .mvn/settings.xml
         env:

@@ -1,6 +1,5 @@
 package us.warframestat.moddetection.gui;
 
-
 public class RunApplication {
   /**
    * Adds a method to run the application. Had to do this, because the program says that the javafx
