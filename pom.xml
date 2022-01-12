@@ -48,7 +48,7 @@
         <dependency>
             <groupId>us.warframestat</groupId>
             <artifactId>moddetection-api</artifactId>
-            <version>0.1.0.5</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

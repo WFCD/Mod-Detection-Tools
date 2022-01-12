@@ -17,6 +17,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javax.imageio.ImageIO;
+
+import org.json.JSONObject;
 import us.warframestat.moddetection.api.detection.DetectMods;
 import us.warframestat.moddetection.gui.MainApplication;
 import us.warframestat.moddetection.gui.Manager;
@@ -142,13 +144,13 @@ public class ModDetectionController {
     String cascadeValue = (String) stageChoice.getValue(); // cascadexx
     double scale = scaleSlider.getValue();
     int neighbours = Math.toIntExact(Math.round(neighbourSlider.getValue()));
-    Map.Entry<BufferedImage, Integer> results =
+    Map.Entry<BufferedImage, JSONObject> results =
         DetectMods.run(image, cascadeValue, scale, neighbours, platform);
     Image imageShown = SwingFXUtils.toFXImage(results.getKey(), null);
     imageViewer.setImage(imageShown);
     imageViewer.fitWidthProperty().bind(imageViewer.getScene().widthProperty().subtract(200));
 
-    totalWorthLabel.setText("Total worth: " + results.getValue());
+    totalWorthLabel.setText("Total worth: " + results.getValue().getInt("totalPrice"));
   }
 
   public void increaseScale(ActionEvent actionEvent) throws IOException {
