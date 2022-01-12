@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javax.imageio.ImageIO;
-
 import org.json.JSONObject;
 import us.warframestat.moddetection.api.detection.DetectMods;
 import us.warframestat.moddetection.gui.MainApplication;
