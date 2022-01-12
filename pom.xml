@@ -6,8 +6,8 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <javafx.version>17.0.0.1</javafx.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
     </properties>
     <dependencies>
         <dependency>
@@ -46,18 +46,24 @@
             <version>1.7.32</version>
         </dependency>
         <dependency>
+            <groupId>us.warframestat</groupId>
+            <artifactId>moddetection-api</artifactId>
+            <version>0.1.0.5</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>us.warframestat</groupId>
-            <artifactId>moddetection-api</artifactId>
-            <version>0.1.0.5</version>
-        </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/WFCD/mod-detection-api</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -79,7 +85,7 @@
                 <version>3.0.1</version>
                 <configuration>
                     <lineSeparator>\n</lineSeparator>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <encoding>UTF-8</encoding>
                     <sortProperties>true</sortProperties>
                     <sortDependencies>scope,groupId,artifactId</sortDependencies>
                     <sortPlugins>groupId,artifactId</sortPlugins>
@@ -108,6 +114,11 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
